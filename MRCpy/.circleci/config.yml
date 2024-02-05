@@ -1,0 +1,90 @@
+version: 2
+
+jobs:
+  style-test:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: >-
+            pip install -r requirements.txt &&
+            pip install -r dev-requirements.txt &&
+            pip install -r ci-requirements.txt
+      
+      - run:
+          name: Check code styling and run tests
+          no_output_timeout: 240m
+          command: >-
+            coverage run --source=MRCpy/ -m unittest discover -s tests
+
+      - run:
+          name: upload CodeCov.io data
+          command: bash <(curl -s https://codecov.io/bash)
+          # Uploads code coverage results, on successful run of previous commands
+          when: on_success
+
+
+  docs-build:
+    docker:
+      - image: cimg/python:3.8.4
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: >-
+            pip install sphinx==1.8.1 &&
+            pip install sphinx sphinx_rtd_theme &&
+            pip install sphinx-gallery &&
+            pip install numpydoc &&
+            pip install -r requirements.txt
+            pip install -r doc-requirements.txt
+      - run:
+          name: Install the library
+          command:
+            python setup.py install
+      - run:
+          name: Build docs
+          no_output_timeout: 240m
+          command: cd docs/ && make html
+      - persist_to_workspace:
+          root: docs/_build
+          paths: html
+
+  docs-deploy:
+    docker:
+      - image: node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: docs/_build
+      - run:
+          name: Disable jekyll builds
+          command: touch docs/_build/html/.nojekyll
+      - run:
+          name: Install and configure dependencies
+          command: |
+            npm install -g --silent gh-pages@2.0.1
+            git config user.email "bkartheekreddy@gmail.com"
+            git config user.name "KARTHEEKCIC"
+      - add_ssh_keys:
+          fingerprints:
+            - "KMUmTqt5D/K6TBDEx51PkTAQYfe6cyThl9qDayCZGpk"
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/_build/html
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - style-test
+      - docs-build
+      # - docs-deploy:
+      #     requires:
+      #       - style-test
+      #       - docs-build
+          # filters:
+          #   branches:
+          #     only: master
