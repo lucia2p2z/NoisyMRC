@@ -2,7 +2,8 @@
 
 [![Made with!](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](#python-code)
 
-This repository is the implementation of the method presented in "**An Adaptation of Minimax Risk Classifiers for Mislabeled Data: a use case on ICU Patient Outcome Prediction**". 
+This repository is the implementation of the method presented in "**Minimax Risk Classifiers for Mislabeled Data:
+a study on Patient Outcome Prediction Tasks**". 
 
 The algorithm proposed in the paper provides an efficient method to learn from noisy labels and a robust method to evaluate the performance of the classifier, even in scenarios where clean test data are not available. 
 This algorithm can be used whether the transition matrix $T$ - representing the noise - is known or not (in this last case the proposed algorithm exploits an external library to estimate it from the data). 
@@ -31,13 +32,16 @@ To install the required libraries do as follow:
     ```
 
 ## Data 
-The `data_mortality` folder contains the polished data as explained in the associated paper. In particular, it provides two version of the dataset in CSV format:
+The `data_mortality` folder contains the *ICU Mortality* dataset, polished as explained in the associated paper. In particular, it provides two version of the dataset in CSV format:
 1. `mortality_alsocat.csv`: Contains the polished data with all the features.
 2. `mortality_nocat.csv`: Contains the polished data without categorical variables.
 
 The original dataset is available [here](https://www.kaggle.com/c/widsdatathon2020/data) (a login is needed to download it).
 
-**NOTE**: Please ensure that the `data_mortality` folder remains in its current location within the parent directory. If you choose to relocate the folder, remember to update the file paths accordingly in the `load_mortality` function declared in the file `general_utilities.py`.
+The `datasets` folder contains *Mammographic Mass* datasets, as well as the additional ones mentioned in the Appendices of the paper.
+
+
+**NOTE**: Please ensure that the folders remains in their current location within the parent directory. If you choose to relocate the folder, remember to update the file paths accordingly.
 
 
 ## Experiments
@@ -79,7 +83,7 @@ Inside the Python scripts listed above you can manually set various parameters f
 
 ## Replicating the plots in the submission
 
-To replicate the plots presented in the submission, you will need to use the Python files named `load_and_plot_***`. These files are designed to load the results and generate various plots. Below are instructions for reproducing specific figures:
+To replicate the plots presented in the submission for *ICU Mortality* dataset, you will need to use the Python files named `load_and_plot_***`. These files are designed to load the results and generate various plots. Below are instructions for reproducing specific figures:
 
 -  To reproduce **Figure 1**: run `load_and_plot_ntrain.py`.
 -  To reproduce **Figure 2**: run `load_and_plot_boxplot.py`.
