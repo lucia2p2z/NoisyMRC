@@ -3,7 +3,7 @@
 [![Made with!](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](#python-code)
 
 This repository is the implementation of the method presented in "**Minimax Risk Classifiers for Mislabeled Data:
-a study on Patient Outcome Prediction Tasks**". 
+a Study on Patient Outcome Prediction Tasks**". 
 
 The algorithm proposed in the paper provides an efficient method to learn from noisy labels and a robust method to evaluate the performance of the classifier, even in scenarios where clean test data are not available. 
 This algorithm can be used whether the transition matrix $T$ - representing the noise - is known or not (in this last case the proposed algorithm exploits an external library to estimate it from the data). 
